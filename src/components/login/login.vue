@@ -1,6 +1,7 @@
 <template>
-<div>
+<div class="login-wrap">
     <el-form
+    class="login-form"
     label-position="top"
     label-width="80px"
     :model="formdata">
@@ -11,7 +12,7 @@
         <el-form-item label="密码">
             <el-input v-model="formdata.password"></el-input>
         </el-form-item>
-          <el-button type="primary">登录</el-button>
+          <el-button class="login-btn" type="primary">登录</el-button>
 
 
     </el-form>
@@ -33,4 +34,21 @@ export default {
 </script>
 
 <style>
+.login-wrap {
+  height: 100%;
+  background-color: #324152;
+  /* 弹性盒布局 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-wrap .login-form {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 30px;
+}
+.login-wrap .login-btn {
+  width: 100%;
+}
 </style>
