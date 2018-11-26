@@ -223,6 +223,11 @@ handleSignout() {
 
 #### 23-项目-用户管理-用户列表-新建组件-路由配置
 
+1. home.vue 开启了路由模式 index 值->path 值
+2. home.vue main-> router-view
+3. 新建 users.vue
+4. router/index.js 在 home 中 children 配置 users 的路由
+
 ### day-08-重点
 
 #### 01-项目-用户管理-用户列表-面包屑和搜索框
