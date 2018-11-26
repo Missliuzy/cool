@@ -12,8 +12,9 @@
         <el-form-item label="密码">
             <el-input v-model="formdata.password"></el-input>
         </el-form-item>
-          <el-button class="login-btn" type="primary">登录</el-button>
-
+          <el-button
+          @click.prevent = "handleLogin()"
+          class="login-btn" type="primary">登录</el-button>
 
     </el-form>
 
@@ -28,6 +29,39 @@ export default {
         username: '',
         password: ''
       }
+    }
+  },
+  methods: {
+    // 登录请求
+    handleLogin() {
+      this.$http.post('login', this.formdata).then(res => {
+        // console.log(res)
+        const {
+          data,
+          meta: { msg, status }
+        } = res.data
+
+        if (status === 200) {
+          // 登录成功
+          // 1. 跳转home
+          // this.$router.push({ name: 'home' })
+          // 2. 提示成功
+          this.$message.success(msg)
+        } else {
+          // 不成功
+          // 1. 提示消息
+          this.$message.warning(msg)
+        }
+        // // =>
+        // const {meta:{msg,status}} =
+        // {meta:{msg:"11",status:200}}
+        // // =>
+        // obj = {msg:"11",status:200}
+        // // =>
+        // {msg,status} = {msg:"11",status:200}
+        // // =>
+        // msg:11  status:200
+      })
     }
   }
 }
