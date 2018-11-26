@@ -46,6 +46,7 @@ export default {
       if (status === 200) {
         // 登录成功
         // 0. 保存token
+
         localStorage.setItem('token', data.token)
 
         // 1. 跳转home
