@@ -174,13 +174,52 @@ localStorage.setItem('token', data.token)
 
 #### 18-项目-首页-侧边栏-导航组件-文档
 
+> el-menu
+
+1. router 开启路由模式 true index 值==path 值
+2. unique-opened 是否只保持一个子菜单的展开
+
 #### 19-项目-首页-侧边栏-引入导航组件-调整
+
+> 调整 el-menu
+> index 值不能一样
 
 #### 20-项目-首页-进入首页的权限验证
 
+> 如果没有登录过 就不能进入到 home 组件
+
+```js
+  // newVue之前自动触发
+  beforeCreate() {
+    // 获取token
+    const token = localStorage.getItem('token')
+    if (!token) {
+      // token 没有 -> 登录
+      this.$router.push({ name: 'login' })
+    }
+    // if token 有 -> 继续渲染组件
+  }
+```
+
 #### 21-项目-首页-头部-退出功能
 
+```js
+handleSignout() {
+      // 1. 清除token
+      localStorage.clear()
+      // 2. 提示
+      this.$message.success('退出成功')
+      // 3. 来到login组件
+      this.$router.push({ name: 'login' })
+    }
+```
+
 #### 22-项目-首页-合并分支-新建用户分支
+
+1. 切到 master
+2. git merge dev-login 合并分支
+3. push
+4. 新建 dev-users
 
 #### 23-项目-用户管理-用户列表-新建组件-路由配置
 
