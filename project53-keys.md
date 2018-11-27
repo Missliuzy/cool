@@ -232,11 +232,41 @@ handleSignout() {
 
 #### 01-项目-用户管理-用户列表-面包屑和搜索框
 
+1. el-card 卡片 小容器
+2. 面包屑
+3. el-row>el-col>el-input+el-button
+4. 调整样式
+
 #### 02-项目-用户管理-用户列表-引入表格组件
+
+> el-table(data 数据源[]) > el-table-column(label 表头/prop="数据") > 字符串数据
+
+```html
+<el-table :data="tableData" style="width: 100%">
+  <el-table-column prop="date" label="日期" width="180"> </el-table-column>
+  <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
+  <el-table-column prop="address" label="地址"> </el-table-column>
+</el-table>
+```
 
 #### 03-项目-用户管理-用户列表-表头处理
 
+> 按照效果 调整了表头的数量和 label
+> type="index" -> 该列的每个单元格的内容从 1 开始的序号
+
 #### 04-项目-用户管理-用户列表-请求数据-设置请求头
+
+1. created(){this.getUserList()}
+2. methods:{getUserlist(){发送请求}}
+3. 接口文档中 除了登录之外的所有请求都需要进行授权->设置请求头
+4. 找 axios 中关于请求头设置的代码
+
+```js
+const AUTH_TOKEN = localStorage.getItem('token')
+this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
+```
+
+5. 发送请求
 
 #### 05-项目-用户管理-用户列表-渲染数据-一般数据
 

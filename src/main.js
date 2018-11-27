@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import ElementUI from 'element-ui'
 import MyServerHttp from '@/plugins/http.js'
-
+import moment from 'moment'
 // 回顾axios
 // import axios from 'axios'
 // Vue.prototype.$http = axios
@@ -22,6 +22,10 @@ Vue.use(MyServerHttp)
 
 Vue.config.productionTip = false
 
+// 全局过滤器 - 处理日期
+Vue.filter('fmtdate', (v) => {
+  return moment(v).format('YYYY-MM-DD')
+})
 
 /* eslint-disable no-new */
 new Vue({

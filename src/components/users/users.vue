@@ -23,7 +23,7 @@
 
     <!-- 3. 表格 -->
      <el-table
-      :data="tableData"
+      :data="userlist"
       style="width: 100%">
       <el-table-column
       type="index"
@@ -31,24 +31,53 @@
         width="60">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="username"
         label="姓名"
         width="80">
       </el-table-column>
       <el-table-column
-        prop="address"
+        prop="email"
         label="邮箱">
       </el-table-column>
        <el-table-column
-        prop="address"
+        prop="mobile"
         label="电话">
       </el-table-column>
-       <el-table-column
-        prop="address"
+
+
+<!-- {{create_time | fmtdate}} -->
+       <!-- <el-table-column
+        prop="create_time | fmtdate"
         label="创建时间">
+      </el-table-column> -->
+
+      <el-table-column
+        label="创建时间">
+        <!-- 如果单元格内显示的内容不是字符串(文本),
+        需要给被显示的内容外层包裹一个template -->
+
+        <!--
+          template内部要用数据 设置slot-scope属性
+          该属性的值是要用数据create_time的数据源userlist
+         -->
+
+         <!--
+           slot-scope的值userlist其实就是el-table绑定的数据userlist
+           userlist.row->数组中的每个对象
+          -->
+        <template slot-scope="scope">
+          {{scope.row.create_time | fmtdate}}
+        </template>
+
       </el-table-column>
+
+
+
+
+
+
        <el-table-column
-        prop="address"
+        prop="mg_state"
         label="用户状态">
       </el-table-column>
        <el-table-column
@@ -67,21 +96,20 @@ export default {
   data() {
     return {
       query: '',
-      pagenum: 1,
-      pagesize: 2,
+
       // 表格绑定的数据
-      tableData: [
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1517 弄'
-        }
-      ]
+      // username: "admin"
+      // email: "admin@aacom"
+      // mobile: "12345678"
+      // create_time: 1486720211
+      // mg_state: true
+      // id: 500
+      // role_name: "主管"
+      userlist: [],
+      // 分页相关数据
+      total: -1,
+      pagenum: 1,
+      pagesize: 2
     }
   },
   created() {
@@ -103,7 +131,23 @@ export default {
           this.pagesize
         }`
       )
+
       console.log(res)
+      const {
+        meta: { status, msg },
+        data: { users, total }
+      } = res.data
+      if (status === 200) {
+        // 1. 给表格数据赋值
+        this.userlist = users
+        // 2. 给total赋值
+        this.total = total
+        // 3. 提示
+        this.$message.success(msg)
+      } else {
+        // 提示
+        this.$message.warning(msg)
+      }
     }
   }
 }
