@@ -345,6 +345,8 @@ this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
 #### 09-项目-用户管理-用户列表-分页组件-文档-引入
 
+> 该接口支持分页 url 参数中有 pagenum pagesize
+
 1. @size-change 每页显示条数变化时 触发
 2. @current-change 当前页改变时 触发
 3. current-page 设置当前页是第几页
@@ -354,11 +356,47 @@ this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
 #### 10-项目-用户管理-用户列表-分页组件-配置数据
 
+1. current-page="pagenum"
+2. page-size=2
+3. :total="total"
+
 #### 11-项目-用户管理-用户列表-分页组件-分页请求
+
+1. 每页显示条数改变 -> this.pagesize = val -> this.getUserList()
+2. 页码改变时 -> this.pagenum = val -> this.getUserList()
+   > 希望当每页条数改变时 从第一页开始显示 this.pagenum=1 -> currPage=1 ?
 
 #### 12-项目-用户管理-用户列表-搜索用户
 
+1. 给搜索输入框绑定 query v-model="query"
+2. 点击搜索按钮 发送请求
+3. 一键清除 clearable
+4. 点击清除按钮 -> 重新获取数据
+
+```html
+<el-input
+  @clear="loadUserList()"
+  clearable
+  placeholder="请输入内容"
+  v-model="query"
+  class="inputSearch"
+>
+  <el-button
+    @click="searchUser()"
+    slot="append"
+    icon="el-icon-search"
+  ></el-button>
+</el-input>
+```
+
 #### 13-项目-用户管理-用户列表-添加用户-显示对话框
+
+1. 引入对话框 > el-form
+2. 点击添加用户的按钮-> 显示对话框 this.dialogFormVisibleAdd = true
+3. 配置对话框
+   3.1 :model=form:{看接口文档中添加用户时用哪个数据}
+   3.2 dialogFormVisibleAdd:false
+   3.3 el-form>el-input v-model="form.xxx"
 
 #### 14-项目-用户管理-用户列表-添加用户-发送请求
 
