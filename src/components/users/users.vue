@@ -24,7 +24,9 @@
     </el-row>
 
     <!-- 3. 表格 -->
-    <el-table  :data="userlist" style="width: 100%">
+    <el-table
+    height="250px"
+    :data="userlist" style="width: 100%">
         <el-table-column type="index" label="#" width="60">
         </el-table-column>
         <el-table-column prop="username" label="姓名" width="80">
@@ -287,6 +289,7 @@ export default {
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
       this.pagesize = val
+      // 回到第一页
       this.pagenum = 1
       this.getUserList()
     },

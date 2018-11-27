@@ -400,13 +400,82 @@ this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
 #### 14-项目-用户管理-用户列表-添加用户-发送请求
 
+1. post this.form
+2. 关闭对话框
+3. 清空文本框 this.form = {}
+4. 更新视图
+5. 提示框
+   > post status === 201
+
 #### 15-项目-用户管理-用户列表-添加用户-处理响应
 
 #### 16-项目-用户管理-用户列表-删除用户-打开确认框
 
+> this.\$confirm().then().catch()
+
+1. 点击确定 -> .then 的参数
+2. 点击取消 -> .catch 的参数
+
 #### 17-项目-用户管理-用户列表-删除用户-处理响应
 
+1. 点击确定 -> 发送 delete 请求
+   1.1 提示
+   1.2 更新数据
+   1.3 回到第一页
+
+> 注意 async 的位置
+
+```js
+this.$confirm('删除用户?', '提示', {
+  confirmButtonText: '确定',
+  cancelButtonText: '取消',
+  type: 'warning'
+})
+  .then(async () => {
+    // 发送删除的请求 :id----> 用户id
+    // 1. data中找userId  X
+    // 2. 把userId以showDeleUserMsgBox参数形式传进来
+    const res = await this.$http.delete(`users/${userId}`)
+    console.log(res)
+    if (res.data.meta.status === 200) {
+      this.pagenum = 1
+      // 更新视图
+      this.getUserList()
+      // 提示
+      this.$message({
+        type: 'success',
+        message: res.data.meta.msg
+      })
+    }
+  })
+  .catch(() => {
+    this.$message({
+      type: 'info',
+      message: '已取消删除'
+    })
+  })
+```
+
 #### 18-项目-用户管理-用户列表-编辑用户-显示对话框
+
+> 点击操作中的编辑按钮- 打开编辑对话框
+
+0. 提供该对话框显示/隐藏控制属性 dialogFormVisibleEdit
+1. 找到编辑按钮@click
+1. 打开对话框
+1. 把之前添加对话框进行复制 - 修改
+   > form 用的是之前添加用户时的 form
+
+#### 19-项目-用户管理-用户列表-补充
+
+1. 之前分页 回到第一页的写法 this.pagenum=1
+2. el-table 固定表头 height="250px"
+   > overflow:auto
+
+#### 20-扩展-git 的使用
+
+1. gitbash -> 指令操作
+2. gitGUI -> 图形页面 -> 一个能操作 git 的软件
 
 ### day-08-重点
 
