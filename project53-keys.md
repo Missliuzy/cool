@@ -270,13 +270,87 @@ this.$http.defaults.headers.common['Authorization'] = AUTH_TOKEN
 
 #### 05-项目-用户管理-用户列表-渲染数据-一般数据
 
+1. 解构赋值 给 this.userlist = res.data.data.users
+2. prop=""
+   <!-- username -->
+   <!-- email -->
+   <!-- mobile -->
+   <!-- create_time -->
+   <!-- mg_state -->
+
 #### 06-项目-用户管理-用户列表-渲染数据-日期格式处理
+
+1. main.js 全局过滤器 fmtdate
+2.
+
+2.1 prop="create_time | fmtdate" 不行!
+2.2 单元格的内容只能显示文本
+
+```html
+<el-table-column prop="create_time" label="创建时间">
+  {{create_time | fmtdate}}
+</el-table-column>
+```
+
+2.3 需要给该内容外层加容器 template
+
+> 不同组件的数据不是共享 独立作用域
+
+```html
+<el-table-column prop="create_time" label="创建时间">
+  <tempalte> {{create_time | fmtdate}} </tempalte>
+</el-table-column>
+```
+
+2.4 最终写法
+
+> slot-scope 作用: 传值
+> slot-scope 的值会自动去上一级找最外层标签 el-table 所绑定的数据 userlist
+> slot-scope="scope" 此时 "scope"==userlist 数组
+> scope.row 是数组的每个对象
+> scope.row.create_time 我们要用的数据
+
+```html
+<el-table-column label="创建时间">
+  <template slot-scope="scope">
+    {{scope.row.create_time | fmtdate}}
+  </template>
+</el-table-column>
+```
 
 #### 07-项目-用户管理-用户列表-渲染数据-用户状态开关
 
+> el-switch v-model="bool"
+
+```html
+<el-table-column label="用户状态">
+  <template slot-scope="scope">
+    <el-switch
+      v-model="scope.row.mg_state"
+      active-color="#13ce66"
+      inactive-color="#ff4949"
+    >
+    </el-switch>
+  </template>
+</el-table-column>
+```
+
 #### 08-项目-用户管理-用户列表-渲染数据-操作
 
+> 操作里面不是字符串
+
+1. template 容器 slot-scope="scope"
+2. el-button
+   > size="mini" plain
+
 #### 09-项目-用户管理-用户列表-分页组件-文档-引入
+
+1. @size-change 每页显示条数变化时 触发
+2. @current-change 当前页改变时 触发
+3. current-page 设置当前页是第几页
+4. page-sizes=[2,4,6,8] 每页多少条的数据数组
+5. page-size 设置显示多少条
+6. total 数据总数
 
 #### 10-项目-用户管理-用户列表-分页组件-配置数据
 

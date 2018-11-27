@@ -54,7 +54,7 @@
 
         </el-table-column>
 
-        <el-table-column  label="用户状态">
+        <el-table-column label="用户状态">
             <template slot-scope="scope">
                 <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
                 </el-switch>
@@ -62,15 +62,25 @@
         </el-table-column>
 
         <el-table-column prop="address" label="操作">
-          <template slot-scope="scope">
-  <el-button size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
-  <el-button size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
-  <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
-          </template>
+            <template slot-scope="scope">
+                <el-button size="mini" plain type="primary" icon="el-icon-edit" circle></el-button>
+                <el-button size="mini" plain type="danger" icon="el-icon-delete" circle></el-button>
+                <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
+            </template>
         </el-table-column>
     </el-table>
 
     <!-- 4. 分页 -->
+
+    <el-pagination
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    :current-page="pagenum"
+    :page-sizes="[2, 4,6, 8]"
+    :page-size="2"
+    layout="total, sizes, prev, pager, next, jumper"
+    :total="total">
+    </el-pagination>
 
 </el-card>
 </template>
@@ -100,6 +110,26 @@ export default {
     this.getUserList()
   },
   methods: {
+    // 分页相关的方法
+    /*
+      24条
+      pagenum=3
+      pagesize=2
+      1,2/3,4/5,6
+      数据->
+       */
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`)
+      this.pagesize = val
+      this.pagenum = 1
+
+      this.getUserList()
+    },
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.pagenum = val
+      this.getUserList()
+    },
     // 获取用户列表的请求
     async getUserList() {
       // query	查询参数	可以为空
