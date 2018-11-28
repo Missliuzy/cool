@@ -63,7 +63,11 @@
 
         <el-table-column label="用户状态">
             <template slot-scope="scope">
-                <el-switch v-model="scope.row.mg_state" active-color="#13ce66" inactive-color="#ff4949">
+                <el-switch
+                @change="changeMgState(scope.row)"
+                v-model="scope.row.mg_state"
+                active-color="#13ce66"
+                inactive-color="#ff4949">
                 </el-switch>
             </template>
         </el-table-column>
@@ -76,7 +80,7 @@
                 type="primary"
                 icon="el-icon-edit"
                 circle
-                @click="showEditUserDia()"
+                @click="showEditUserDia(scope.row)"
                 ></el-button>
                 <el-button
                 size="mini"
@@ -135,7 +139,7 @@
     <el-dialog title="编辑用户" :visible.sync="dialogFormVisibleEdit">
   <el-form :model="form">
     <el-form-item label="用户名" label-width="100px">
-      <el-input v-model="form.username" autocomplete="off"></el-input>
+      <el-input disabled v-model="form.username" autocomplete="off"></el-input>
     </el-form-item>
 
      <el-form-item label="邮箱" label-width="100px">
@@ -150,7 +154,7 @@
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="dialogFormVisibleEdit = false">取 消</el-button>
-    <el-button type="primary" @click="dialogFormVisibleEdit = false">确 定</el-button>
+    <el-button type="primary" @click="editUser()">确 定</el-button>
   </div>
 </el-dialog>
 
@@ -190,14 +194,40 @@ export default {
         email: '',
         mobile: ''
       }
+      // currUserId: -1
     }
   },
   created() {
     this.getUserList()
   },
   methods: {
+    // 修改状态
+    async changeMgState(user) {
+      // 发送请求
+      // users/:uId/state/:type
+      const res = await this.$http.put(
+        // 1. mg_state = false
+        // 2. 点开关 -> mg_state=true
+        `users/${user.id}/state/${user.mg_state}`
+      )
+      console.log(res)
+    },
+    // 编辑用户 - 发送请求
+    async editUser() {
+      // users/:id
+      const res = await this.$http.put(`users/${this.form.id}`, this.form)
+      // console.log(res)
+      // 1. 关闭对话框
+      this.dialogFormVisibleEdit = false
+      // 2. 更新视图
+      this.getUserList()
+    },
     // 编辑用户 - 显示对话框
-    showEditUserDia() {
+    showEditUserDia(user) {
+      // console.log(user)
+
+      this.form = user
+      // 获取用户数据
       this.dialogFormVisibleEdit = true
     },
     // 删除用户 - 打开消息盒子 (config)
@@ -264,6 +294,7 @@ export default {
     },
     // 添加用户 - 显示对话框
     showAddUserDia() {
+      this.form = {}
       this.dialogFormVisibleAdd = true
     },
     // 清空搜索框 重新获取数据
