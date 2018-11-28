@@ -89,7 +89,11 @@
                 icon="el-icon-delete"
                 circle
                 @click="showDeleUserMsgBox(scope.row.id)"></el-button>
-                <el-button size="mini" plain type="success" icon="el-icon-check" circle></el-button>
+                <el-button
+                 @click="showSetUserRoleDia(scope.row)"
+                size="mini"
+                plain type="success"
+                icon="el-icon-check" circle></el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -158,6 +162,31 @@
   </div>
 </el-dialog>
 
+  <!-- 分配角色的对话框 -->
+  <el-dialog title="分配角色" :visible.sync="dialogFormVisibleRol">
+  <el-form :model="form">
+    <el-form-item label="用户名" label-width="100px">
+      {{"当前用户的用户名"}}
+    </el-form-item>
+    <el-form-item label="角色" label-width="100px">
+
+      <!--
+        如果select的绑定的数据的值 和 option的value一样 ,
+      就会显示该option的label值
+      -->
+      <el-select v-model="currRoleId">
+        <el-option label="请选择" :value="-1"></el-option>
+        <!-- <el-option label="角色名称" value="beijing"></el-option> -->
+      </el-select>
+
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisibleRol = false">取 消</el-button>
+    <el-button type="primary" @click="dialogFormVisibleRol = false">确 定</el-button>
+  </div>
+</el-dialog>
+
 </el-card>
 </template>
 
@@ -183,6 +212,7 @@ export default {
       // 添加对话框的属性
       dialogFormVisibleAdd: false,
       dialogFormVisibleEdit: false,
+      dialogFormVisibleRol: false,
       // 添加用户的表单数据
       // username	用户名称	不能为空
       // password	用户密码	不能为空
@@ -193,14 +223,19 @@ export default {
         password: '',
         email: '',
         mobile: ''
-      }
-      // currUserId: -1
+      },
+      // 分配角色
+      currRoleId: -1
     }
   },
   created() {
     this.getUserList()
   },
   methods: {
+    // 分配角色 - 打开对话框
+    showSetUserRoleDia(user) {
+      this.dialogFormVisibleRol = true
+    },
     // 修改状态
     async changeMgState(user) {
       // 发送请求

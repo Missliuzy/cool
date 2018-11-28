@@ -482,13 +482,38 @@ this.$confirm('删除用户?', '提示', {
 
 #### 01-项目-用户管理-用户列表-编辑用户-显示编辑数据
 
+1. 点击 edit 编辑按钮 scope.row
+2. 在 showEditUserDia 方法中 this.form = user user 其实是 scope.row
+   > 用户名 禁用
+
 #### 02-项目-用户管理-用户列表-编辑用户-发送请求
+
+1. 找到对话框的确定按钮 - > editUser() -> 发送请求
+   > this.form = user
+   > id -> this.form.id
+   > 先点编辑 再点添加 -> 打开添加对话框之前 this.form={}
 
 #### 03-项目-用户管理-用户列表-修改用户状态
 
+1. 找到开关 @change="changeMgState(scope.row)"
+2. changeMgState(){发送 put 请求}
+   > users/:uId/state/:type uid 用户 id
+
 #### 04-项目-用户管理-用户列表-分配角色-功能演示
 
+1. 点击按钮 -> 打开对话框
+2. 对话框 中有下拉框
+3. 修改当前用户的角色
+4. 5 个角色名来源于请求
+   > 每个角色的权限是不同的
+
 #### 05-项目-用户管理-用户列表-分配角色-显示对话框
+
+1. 点击操作中的按钮 -> 打开对话框
+2. 引入对话框(有下拉框)
+   > 下拉框的特性: 如果 select 绑定的数据的值和 option 的 value 值一样 此时显示的是该 option 的 label 值
+3. 把 option 分成了两类 请选择(-1) 和 v-for 遍历 option
+4. data 提供了 el-select 的 v-model 所绑定的数据 currRoleId = -1
 
 #### 06-项目-用户管理-用户列表-分配角色-显示对话框-下拉框
 
