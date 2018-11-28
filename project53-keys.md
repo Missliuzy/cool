@@ -621,11 +621,28 @@ this.$confirm('删除用户?', '提示', {
 
 #### 19-项目-权限管理-角色列表-获取角色列表数据
 
+1. 发送请求 this.\$http.get(`roles`)
+
 #### 20-项目-权限管理-角色列表-表格展示
+
+> 将 users.vue 中的表格进行复制 修改
+
+1. :data="rolelist"
+2. roleName
+3. roleDesc
+4. 操作
 
 #### 21-项目-权限管理-角色列表-表格展示-展开行功能分析
 
+1. type="expand"
+2. template > 该角色的权限(三级)
+3. 页面布局如果是行列问题 -> for 循环 -> v-for 嵌套 el-tag
+
 #### 22-项目-权限管理-角色列表-表格展示-展开行-一级权限
+
+1. 分析数据 rolelist > 每个对象中的 children 中 authName
+2. 布局 一行>(列 A>(el-tag)+列 B>(一行 el-row)>两列((el-colA>el-tag+el)-colB>el-tag))
+3. 一级权限展示 v-for 最外层的 el-row scope.row.children
 
 #### 23-项目-权限管理-角色列表-表格展示-展开行-二级权限
 

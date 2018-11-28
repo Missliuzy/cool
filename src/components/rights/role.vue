@@ -12,6 +12,26 @@
 
     <el-table :data="rolelist" style="width: 100%">
 
+
+        <el-table-column type="expand"  width="150">
+          <template slot-scope="scope">
+                <el-row v-for="(item1,i) in scope.row.children" :key="i">
+                  <el-col :span="4">
+                    <el-tag>{{item1.authName}}</el-tag>
+                  </el-col>
+                  <el-col :span="20">
+                    <el-row>
+                      <el-col :span="4">
+
+                      </el-col>
+                      <el-col :span="20"></el-col>
+                    </el-row>
+                  </el-col>
+                </el-row>
+          </template>
+        </el-table-column>
+
+
         <el-table-column type="index" label="#" width="150">
         </el-table-column>
 
@@ -62,3 +82,13 @@ export default {
   margin-top: 20px;
 }
 </style>
+
+
+// 布局是行列布局 -> for嵌套
+// v-for嵌套 渲染el-tag
+
+// 请在控制台输出以下图形
+    *
+  *   *
+*   *   *
+// for
