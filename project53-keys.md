@@ -517,9 +517,38 @@ this.$confirm('删除用户?', '提示', {
 
 #### 06-项目-用户管理-用户列表-分配角色-显示对话框-下拉框
 
+> el-select 和 el-option
+> 改变 label 时 -> 该 label 显示 -> 改变了 value -> el-select v-model 绑定的数据 自动关联
+
 #### 07-项目-用户管理-用户列表-分配角色-显示当前用户角色
 
+1. 通过请求获取所有角色 roles
+2. v-for el-option :label="item.roleName" :value="item.id"
+3. 通过请求获取当前用户的 rid
+4. 给 el-select 中 v-model 绑定的数据赋值 this.currRoleId = res.data.data.rid
+   > rid 接口文档的参数名是 role_id
+
 #### 08-项目-用户管理-用户列表-分配角色-修改用户角色
+
+1. 通过视图操作->修改了 label->value 值变化->el-select v-model 绑定的数据变化
+2. currRoleId
+   > 在 setRole 方法中要使用用户 id 在 data 声明 currUserId:-1
+3. 在 showSetUserRoleDia(){this.currUserId = user.id}
+
+```js
+ async setRole() {
+      // users/:id/role
+      // :id 要修改的用户的id值
+      // 请求体中 rid 修改的新值角色id
+      const res = await this.$http.put(`users/${this.currUserId}/role`, {
+        rid: this.currRoleId
+      })
+      console.log(res)
+      // 关闭对话框
+      this.dialogFormVisibleRol = false
+    },
+
+```
 
 #### 09-项目-用户管理-用户列表-合并分支-推送
 
