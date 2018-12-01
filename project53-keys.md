@@ -984,7 +984,78 @@ item.attr_vals =
    file.data.tmp_path 图片临时上传的路径
 
 #### 16-项目-商品管理-添加商品-商品内容-富文本编辑器
+> npm install vue-quill-editor --save
+1. 全局注册 + 局部注册
+```js
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
+```
+2. 通过选项局部注册
+```js
+components: {
+    quillEditor
+  },
+
+```
+> v-model="form.goods_introduce"
+> github+npm+vue官网(生态资源>资源列表)
 
 #### 17-项目-商品管理-添加商品-表单数据分析
+```js
+// 1.
+// 未处理的数据
+// goods_cat	以为','分割的分类列表	不能为空  -> 级联选择器绑定的selectedOptions
+// this.selectoption -> string
+// 2.
+// pics	上传的图片临时路径（对象）	可以为空
+// pics是数组 [{pic:图片临时路径}]
+// 3. 
+// attrs	商品的参数（数组）
+// 动态参数和静态参数 -> 数组
 
+
+```
 #### 18-项目-商品管理-添加商品-表单数据处理-分类和图片
+0. this.form.goods = this.selectoption.join(',')
+
+1. 在临时上传成功时 给pics添加元素
+2. 在移除图片
+2.1 findIndex 找索引
+2.2 splice(索引,1)
+
+```js
+ handleRemove(file){
+        // file.response.data.tmp_path 图片临时上传的路径
+        console.log('移除');
+        // console.log(file)
+
+        //从 this.form.pics 移除当前x掉的图片
+        // 先获取该图片的索引
+        // findIndex((item)=>{}) 遍历 把符合条件的元素的索引进行返回
+
+        // [{pic:图片路径},{pic:图片路径2}]
+        let Index = this.form.pics.findIndex((item)=>{
+          return item.pic === file.response.data.tmp_path
+        })
+        this.form.pics.splice(Index,1)
+        console.log(this.form.pics)
+
+
+      },
+      //
+      handleSuccess(file){
+        // file.data.tmp_path 图片临时上传的路径
+          // console.log('成功');
+          // 给this.form.pics
+          this.form.pics.push({
+            pic:file.data.tmp_path
+          })
+
+        // console.log(file)
+
+      },
+
+```

@@ -138,7 +138,6 @@ export default {
             // pics	上传的图片临时路径（对象）	可以为空
             // pics是数组 [{pic:图片临时路径}]
 
-
             // attrs	商品的参数（数组）
             // 动态参数和静态参数 -> 数组
             form: {
@@ -180,10 +179,10 @@ export default {
         // goods_cat -> 分类
         this.form.goods_cat = this.selectedOptions.join(',')
 
-        // pics:[] {pic:?}
+        // pics 在上传和移除图片时 进行赋值和删除 [].findIndex()
 
         // 在发请求之前 处理this.form中的未处理数据
-        // const res = await this.$http.post(`goods`,this.form)
+        const res = await this.$http.post(`goods`,this.form)
         // console.log(res)
 
       },
