@@ -90,7 +90,14 @@
             </el-upload>
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane name="5" label="商品内容"></el-tab-pane>
+        <el-tab-pane name="5" label="商品内容">
+          <el-form-item>
+            <!-- 表单元素 -->
+            <el-button type="primary" @click="addGoods()">点我-添加商品</el-button>
+            <!-- 富文本 -->
+            <quill-editor v-model="form.goods_introduce"></quill-editor>
+          </el-form-item>
+        </el-tab-pane>
       </el-tabs>
     </el-form>
   </el-card>
@@ -102,7 +109,16 @@
 </template>
 
 <script>
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+import { quillEditor } from 'vue-quill-editor'
+
 export default {
+  components: {
+    quillEditor
+  },
     data() {
         return {
             active: "1",
@@ -113,19 +129,28 @@ export default {
             // goods_price	价格	不能为空
             // goods_weight	重量	不能为空
             // goods_number	数量	不能为空
-            // goods_cat	以为','分割的分类列表	不能为空  -> 级联选择器绑定的selectedOptions
             // goods_introduce	介绍	可以为空
+
+            // 未处理的数据
+            // goods_cat	以为','分割的分类列表	不能为空  -> 级联选择器绑定的selectedOptions
+            // this.selectoption -> string
+
             // pics	上传的图片临时路径（对象）	可以为空
+            // pics是数组 [{pic:图片临时路径}]
+
+
             // attrs	商品的参数（数组）
+            // 动态参数和静态参数 -> 数组
             form: {
                 goods_name: '',
-                goods_cat: '',
                 goods_price: '',
                 goods_number: '',
                 goods_weight: '',
                 goods_introduce: '',
-                pics: '',
-                attrs: ''
+
+                goods_cat: '',
+                pics: [],
+                attrs: []
 
             },
             // 级联选择器绑定的数据
@@ -150,6 +175,18 @@ export default {
         this.getGoodCate()
     },
     methods: {
+      // 添加商品 - 发送请求
+      async addGoods(){
+        // goods_cat -> 分类
+        this.form.goods_cat = this.selectedOptions.join(',')
+
+        // pics:[] {pic:?}
+
+        // 在发请求之前 处理this.form中的未处理数据
+        // const res = await this.$http.post(`goods`,this.form)
+        // console.log(res)
+
+      },
       // 图片上传时的相关方法
       // file形参里面是当前操作的图片的相关信息(图片名/图片路径)
       handlePreview(file){
@@ -158,15 +195,31 @@ export default {
       handleRemove(file){
         // file.response.data.tmp_path 图片临时上传的路径
         console.log('移除');
+        // console.log(file)
 
-        console.log(file)
+        //从 this.form.pics 移除当前x掉的图片
+        // 先获取该图片的索引
+        // findIndex((item)=>{}) 遍历 把符合条件的元素的索引进行返回
+
+        // [{pic:图片路径},{pic:图片路径2}]
+        let Index = this.form.pics.findIndex((item)=>{
+          return item.pic === file.response.data.tmp_path
+        })
+        this.form.pics.splice(Index,1)
+        console.log(this.form.pics)
+
 
       },
+      //
       handleSuccess(file){
         // file.data.tmp_path 图片临时上传的路径
-          console.log('成功');
+          // console.log('成功');
+          // 给this.form.pics
+          this.form.pics.push({
+            pic:file.data.tmp_path
+          })
 
-        console.log(file)
+        // console.log(file)
 
       },
       // 点击不同的tab时
@@ -204,7 +257,7 @@ export default {
             //获取静态参数的数据
             const res =
             await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=only`)
-            console.log(res)
+            // console.log(res)
               this.arrStaticparams = res.data.data
 
         }
@@ -228,5 +281,10 @@ export default {
 <style>
 .alert {
     margin-top: 20px;
+}
+
+.ql-editor{
+  min-height: 300px;
+
 }
 </style>
