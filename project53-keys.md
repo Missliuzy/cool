@@ -768,19 +768,23 @@ this.$confirm('删除用户?', '提示', {
 > 在写之后的路由配置时 path 不能随便写!
 
 #### 15-项目-效果演示-不同角色用户登录-显示对应权限
+
 > 每个角色有不同的权限
+
 1. 新建用户 分配角色
 2. 回到登录页 登录新用户 -> token
-3. 渲染home组件的侧边栏时 使用header中的token
-4. 发送getMenus() 也会使用header
-> 基于token 的服务端认证流程
+3. 渲染 home 组件的侧边栏时 使用 header 中的 token
+4. 发送 getMenus() 也会使用 header
+   > 基于 token 的服务端认证流程
 
 #### 16-项目-不同角色用户登录-显示对应权限-导航守卫
-1. 在home.vue中判断token 很麻烦
+
+1. 在 home.vue 中判断 token 很麻烦
 2. 导航守卫
-2.1 路由配置生效前 先来到路由守卫的cb
-2.2 to 要去的路由配置 from当前的路由配置
-2.3 next() 让to的路由配置继续生效
+   2.1 路由配置生效前 先来到路由守卫的 cb
+   2.2 to 要去的路由配置 from 当前的路由配置
+   2.3 next() 让 to 的路由配置继续生效
+
 ```js
 router.beforeEach((to, from, next) => {
   // to  from next
@@ -806,16 +810,27 @@ router.beforeEach((to, from, next) => {
 
     //      如果有  -> next()
     next()
-
-
   }
-
 })
 ```
 
-
 #### 17-项目-权限管理-合并分支-推送-新建分支
 
+1. git status
+2. git add .
+3. git commit -m ""
+4. git checkout master
+5. git branch
+6. git status
+7. git push
+
 #### 18-项目-商品管理-功能演示
+
+1. 商品列表-添加商品
+2. 分类参数-
+   2.1 动态参数(√)
+   2.2 静态参数(X)
+3. 商品分类
+   3.1 表格中的树形结构
 
 #### 19-项目-商品管理-商品列表-准备组件
