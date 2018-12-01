@@ -833,4 +833,158 @@ router.beforeEach((to, from, next) => {
 3. 商品分类
    3.1 表格中的树形结构
 
-#### 19-项目-商品管理-商品列表-准备组件
+### day-11-重点
+
+#### 01-项目-商品管理-商品列表-准备组件
+
+> goods/goodslist.vue
+> 配置路由 标识 path 是 goods
+
+#### 02-项目-商品管理-添加商品-新建组件配置路由
+
+1. goods/goodsadd.vue
+2. 配置路由 path:'/goodsadd'
+3. 点击列表组件中 ed 添加商品按钮 js 编程式导航
+
+#### 03-项目-商品管理-添加商品-步骤条
+
+1. 面包屑
+2. 提示 el-alert
+3. 步骤条(进度条) el-steps
+   > :active="abc" 如果"abc"值=2 表示当前是第二步
+
+#### 04-项目-商品管理-添加商品-tabs
+
+1. 引入 el-tabs 表单元素 v-model="active"
+2. 如果选中的第二个 el-tab-pane 此时 active 的值就是该 tab 的 name 值 也就是 2
+3. 让 el-steps 步骤条的:active 属性的值和 v-model 绑定的属性 是同一个
+
+```html
+<el-tabs v-model="active" tab-position="left" style="height: 200px;">
+  <el-tab-pane name="1" label="基本信息">基本信息</el-tab-pane>
+  <el-tab-pane name="2" label="商品参数">商品参数</el-tab-pane>
+  <el-tab-pane name="3" label="商品属性">商品属性</el-tab-pane>
+  <el-tab-pane name="4" label="商品图片">商品图片</el-tab-pane>
+  <el-tab-pane name="5" label="商品内容">商品内容</el-tab-pane>
+</el-tabs>
+```
+
+#### 05-项目-商品管理-添加商品-基本信息-表单绑定数据
+
+1. 最外层包裹 el-form 调整了样式 overflow:auto
+2. v-model="form"
+3. form 数据的来源 添加商品的网络请求
+4. 基本信息 tab-一般表单元素的数据绑定(名称/价格/重量/数量)
+
+#### 06-项目-商品管理-添加商品-基本信息-级联选择器-文档-引入
+
+> el-cascader 表单元素
+
+1. :options=数据 list[]
+2. v-model="selectedOptions" 最终选择的 label 对应的 value 会在 selectedOptions 数组中
+3. :props="{label:'goodsname',value:'id',children:'children'}"
+4. @change="" 选择改变时触发
+
+```js
+list: [
+  {
+    goodsname: '家电',
+    id: 1,
+    children: [
+      {
+        goodsname: 'a家电',
+        id: 100,
+        children: []
+      }
+    ]
+  }
+]
+```
+
+```html
+<el-cascader
+  expand-trigger="hover"
+  :options="options"
+  v-model="selectedOptions"
+  :props="defaultProp"
+  @change="handleChange"
+></el-cascader>
+```
+
+#### 07-项目-商品管理-添加商品-基本信息-级联选择器-获取分类数据
+
+#### 08-项目-商品管理-添加商品-基本信息-级联选择器-配置数据
+
+1. created(){}
+2. getGoodCate(){发送请求 type=3}
+3. this.options = res.data.data
+4. defaultProp:{label:'cat_name',value:'id',children:'children'}
+5. selectedOptions:[1,3,6] 设置默认的分类
+
+#### 09-项目-商品管理-添加商品-商品参数-获取动态参数数据
+
+1. 必须要先选择三级分类 -> 点击第二个 tab 才会获取数据
+2. if(this.active==='2'){if(this.selectoption.length!==3){提示 return} 发送请求}
+3. categories/\${this.selectedOptions[2]}/attributes?sel=many
+   > sel=many 获取的是动态参数的数据
+
+#### 10-项目-商品管理-添加商品-商品参数-复选框组-文档-引入
+
+1. 商品参数->动态参数数据 -> this.arrDyparams
+2. el-form-item +复选框组
+3. v-for 遍历 el-form-item 和里面的 el-checkbox
+   > this.arrDyparams 中的每个对象的 attr_vals 字符串 -> split(',')数组
+
+```js
+item.attr_vals =
+  item.attr_vals.length === 0 ? [] : item.attr_vals.trim().split(',')
+```
+
+#### 11-项目-商品管理-添加商品-商品参数-复选框组-调整样式
+
+1. border
+2. el-checkbox-group v-model="item1.attr_vals"
+
+#### 12-项目-商品管理-添加商品-商品属性-获取静态参数数据
+
+1. 如果选中了第三个 tab this.active==='3' 同时 分类数组 长度===3
+2. sel=only
+   > 静态参数的数据 是给商品属性用的
+
+#### 13-项目-商品管理-添加商品-商品参数-布局
+
+> v-for 遍历 arrStaticparams
+
+```html
+<el-form-item
+  :label="item.attr_name"
+  v-for="(item,i) in arrStaticparams"
+  :key="i"
+>
+  <el-input v-model="item.attr_vals"></el-input>
+</el-form-item>
+```
+
+#### 14-项目-商品管理-添加商品-图片上传-文档-引入
+
+> el-upload
+
+1. action 全路径
+2. headers 头部
+3. :on-remove="移除触发的方法"
+4. :on-preview=""
+5. :on-success=""
+
+#### 15-项目-商品管理-添加商品-图片上传-配置属性-临时路径
+
+1. action="http 开头全路径"
+2. headers:{Authorization:localStorage.getItem('token')}
+   > 除了登录请求 都需要设置头部 之前的头部设置是给 axios 发起的请求设置的
+3. file.response.data.tmp_path 图片临时上传的路径
+   file.data.tmp_path 图片临时上传的路径
+
+#### 16-项目-商品管理-添加商品-商品内容-富文本编辑器
+
+#### 17-项目-商品管理-添加商品-表单数据分析
+
+#### 18-项目-商品管理-添加商品-表单数据处理-分类和图片

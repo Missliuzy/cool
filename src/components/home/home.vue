@@ -1,56 +1,45 @@
 <template>
-<el-container class="container">
+  <el-container class="container">
     <el-header class="header">
-        <el-row>
-            <el-col :span="4">
-                <div class="grid-content bg-purple">
-                    <img src="../../assets/logo.png" alt="无法显示图片">
-                </div>
-            </el-col>
-            <el-col :span="18" class="middle">
-                <h3>电商后台管理系统</h3>
-            </el-col>
-            <el-col :span="2">
-                <div class="grid-content bg-purple">
-                    <a class="loginout" @click.prevent="handleSignout()" href="#">退出</a>
-                </div>
-            </el-col>
-        </el-row>
-
+      <el-row>
+        <el-col :span="4">
+          <div class="grid-content bg-purple">
+            <img src="../../assets/logo.png" alt="无法显示图片">
+          </div>
+        </el-col>
+        <el-col :span="18" class="middle">
+          <h3>电商后台管理系统</h3>
+        </el-col>
+        <el-col :span="2">
+          <div class="grid-content bg-purple">
+            <a class="loginout" @click.prevent="handleSignout()" href="#">退出</a>
+          </div>
+        </el-col>
+      </el-row>
     </el-header>
     <el-container>
-        <el-aside class="aside" width="200px">
-            <!-- 侧边栏导航el-menu -->
-            <!-- 开启路由模式 -->
-            <el-menu
-            :router="true"
-            :unique-opened="true">
+      <el-aside class="aside" width="200px">
+        <!-- 侧边栏导航el-menu -->
+        <!-- 开启路由模式 -->
+        <el-menu :router="true" :unique-opened="true">
+          <el-submenu :index="''+item1.order" v-for="(item1,index) in menus" :key="index">
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>{{item1.authName}}</span>
+            </template>
 
-                <el-submenu :index="''+item1.order" v-for="(item1,index) in menus" :key="index">
-
-                    <template slot="title">
-                        <i class="el-icon-location"></i>
-                        <span>{{item1.authName}}</span>
-                    </template>
-
-                    <el-menu-item
-                    :index="item2.path"
-                    v-for="(item2,index) in item1.children"
-                    :key="index">
-                        <i class="el-icon-circle-check"></i>
-                        <span>{{item2.authName}}</span>
-                    </el-menu-item>
-                </el-submenu>
-
-
-            </el-menu>
-
-        </el-aside>
-        <el-main class="main">
-          <router-view></router-view>
-        </el-main>
+            <el-menu-item :index="item2.path" v-for="(item2,index) in item1.children" :key="index">
+              <i class="el-icon-circle-check"></i>
+              <span>{{item2.authName}}</span>
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-main class="main">
+        <router-view></router-view>
+      </el-main>
     </el-container>
-</el-container>
+  </el-container>
 </template>
 
 <script>
@@ -78,7 +67,7 @@ export default {
     // 获取导航数据
     async getMenus() {
       const res = await this.$http.get(`menus`)
-      console.log(res)
+      // console.log(res)
       this.menus = res.data.data
     },
     handleSignout() {
