@@ -1153,21 +1153,60 @@ attr_vals: attr_vals.join(",")
 1. 对话框中的级联选择器的数据 还未获取
 
 #### 13-项目-商品管理-商品分类-element-tree-grid-文档-引入
-
+> 单元格->树形结构 -> el-table -> elementui table插件
+> 插件名 element-tree-grid -> 增强了el-table的单元格
+1. npm i element-tree-grid
+2. 导入
+3. 局部注册
+4. <el-tree-grid></el-tree-grid>
+5. treeKey  parentKey  levelKey  childKey
 #### 14-项目-商品管理-商品分类-element-tree-grid-配置
+> treeKey等属性值的来源 el-table :data="list"
+```js
+<el-tree-grid
+        prop="cat_name"
+        label="分类名称"
+        treeKey="cat_id"
+        parentKey="cat_pid"
+        levelKey="cat_level"
+        childKey="children"
+      ></el-tree-grid>
+```
 
-#### 15-项目-商品管理-商品分类-添加分类-打开对话框
+#### 15-项目-商品管理-商品分类-添加分类-打开对话框-获取数据
+1. 点击添加分类按钮 - 打开对话框
+2. 获取二级分类的数据 type=2
+> 不能给三级分类子级添加四级分类
 
-#### 16-项目-商品管理-商品分类-添加分类-获取数据
 
-#### 17-项目-商品管理-商品分类-添加分类-发送请求
+#### 16-项目-商品管理-商品分类-添加分类-发送请求
+> 只能添加三级分类 
+> form:{cat_name:'',cat_level:-1,cat_pid:-1}
+```js
+  if (this.selectedOptions.length === 0) {
+        this.form.cat_pid = 0;
+        this.form.cat_level = 0;
+      } else if (this.selectedOptions.length === 1) {
+        this.form.cat_pid = this.selectedOptions[0];
+        this.form.cat_level = 1;
+      } else if (this.selectedOptions.length === 2) {
+        this.form.cat_pid = this.selectedOptions[1];
+        this.form.cat_level = 2;
+      }
 
-#### 18-项目-合并分支-推送分支-新建分支
+```
 
-#### 19-项目-订单管理-订单列表-准备组件-路由配置
+#### 17-项目-合并分支-推送分支-新建分支
 
-#### 21-项目-订单管理-订单列表-省市区引入
 
-#### 22-项目-数据统计-数据报表-Echarts-文档-引入
+#### 18-项目-订单管理-订单列表-准备组件-路由配置
 
-#### 23-项目-数据统计-数据报表-Echarts-配置
+
+#### 19-项目-订单管理-订单列表-省市区引入
+
+
+#### 20-项目-数据统计-数据报表-Echarts-文档-引入
+
+
+#### 22-项目-数据统计-数据报表-Echarts-配置
+
