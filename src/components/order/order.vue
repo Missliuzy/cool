@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column prop="is_send" label="是否发货" width="100"></el-table-column>
       <el-table-column label="下单时间" width="90">
-        <template slot-scope="scope">{{scope.row.create_time|fmtDate}}</template>
+        <template slot-scope="scope">{{scope.row.create_time|fmtdate}}</template>
       </el-table-column>
       <el-table-column label="操作" width="180">
         <template slot-scope="scope">
@@ -52,6 +52,9 @@
 </template>
 
 <script>
+import catlist from "@/assets/city_data2017_element.js";
+// .vue 引入.js库(swiper.js/zepto.js/iscroll.js/wow.js(整屏滚动))
+
 export default {
   data() {
     return {
@@ -75,6 +78,7 @@ export default {
       this.list = res.data.data.goods;
     },
     showEditdia() {
+      this.catlist = catlist;
       this.dialogFormVisible = true;
     }
   }

@@ -1197,16 +1197,40 @@ attr_vals: attr_vals.join(",")
 ```
 
 #### 17-项目-合并分支-推送分支-新建分支
+1. git status
+2. git add .
+3. git commit -m ""
+4. git branch
+5. git checkout master
+6. git merge dev-goods
+7. git push
 
 
 #### 18-项目-订单管理-订单列表-准备组件-路由配置
-
+1. order/order.vue
+2. 路由配置 path:"/orders"
+> 编辑按钮->打开对话框-> 省市区数据
 
 #### 19-项目-订单管理-订单列表-省市区引入
 
+> 在.vue中可以引入.js库 swiper.js
+> vue-swiper.js 插件
+
 
 #### 20-项目-数据统计-数据报表-Echarts-文档-引入
+1. npm i echarts
+2. 导入
+3. 视图 提供一个容器 div(需要设置宽高)
+4. myechart.init(容器)
+5. 配置选项(配置数据) option
+6. mychart.setOption(option)
+> mounted(){this.useEcharts()}
 
 
 #### 22-项目-数据统计-数据报表-Echarts-配置
+> reports/type/1
+> option来源于两部分 
+// 1. reports/type/1
+// 2. 固定数据
+// setOption()
 
