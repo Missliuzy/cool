@@ -984,8 +984,11 @@ item.attr_vals =
    file.data.tmp_path 图片临时上传的路径
 
 #### 16-项目-商品管理-添加商品-商品内容-富文本编辑器
+
 > npm install vue-quill-editor --save
+
 1. 全局注册 + 局部注册
+
 ```js
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -993,17 +996,21 @@ import 'quill/dist/quill.bubble.css'
 
 import { quillEditor } from 'vue-quill-editor'
 ```
+
 2. 通过选项局部注册
+
 ```js
 components: {
     quillEditor
   },
 
 ```
+
 > v-model="form.goods_introduce"
-> github+npm+vue官网(生态资源>资源列表)
+> github+npm+vue 官网(生态资源>资源列表)
 
 #### 17-项目-商品管理-添加商品-表单数据分析
+
 ```js
 // 1.
 // 未处理的数据
@@ -1012,19 +1019,19 @@ components: {
 // 2.
 // pics	上传的图片临时路径（对象）	可以为空
 // pics是数组 [{pic:图片临时路径}]
-// 3. 
+// 3.
 // attrs	商品的参数（数组）
 // 动态参数和静态参数 -> 数组
-
-
 ```
+
 #### 18-项目-商品管理-添加商品-表单数据处理-分类和图片
+
 0. this.form.goods = this.selectoption.join(',')
 
-1. 在临时上传成功时 给pics添加元素
-2. 在移除图片
-2.1 findIndex 找索引
-2.2 splice(索引,1)
+1. 在临时上传成功时 给 pics 添加元素
+1. 在移除图片
+   2.1 findIndex 找索引
+   2.2 splice(索引,1)
 
 ```js
  handleRemove(file){
@@ -1059,3 +1066,108 @@ components: {
       },
 
 ```
+
+### day-12-重点
+
+#### 01-项目-商品管理-添加商品-表单数据处理-attrs
+1. this.form.attrs [{attr_id:?,attr_value:?}]
+2. 动态参数数组+静态参数数组 map遍历 返回新数组arr1和arr2
+3. 合并数组 this.form.attrs = [...arr1,...arr2]
+4. 发送请求
+5. 回到商品列表页
+
+#### 02-项目-商品管理-分类参数-新建组件-路由配置
+1. goods/cateparams.vue
+2. 路由配置 path:"/params"
+
+#### 03-项目-商品管理-分类参数-动态参数-布局-配置级联选择器
+1. el-form>el-form-item>el-cas级联选择器
+2. 把goodsadd.vue中的级联选择器进行修改
+3. created(){this.getGoodsCate()}
+
+#### 04-项目-商品管理-分类参数-动态参数-获取动态参数数据
+1. 级联选择器选项发生改变时 同时 选择了三级分类
+> 获取动态参数数组 -> 把goodsadd.vue的代码进行修改
+
+#### 05-项目-商品管理-分类参数-动态参数-表格渲染
+1. el-table :data="arrDyparams"
+2. 属性名称 prop="attr_name"
+3. 第一列 type="expand"
+
+#### 06-项目-商品管理-分类参数-动态参数-动态编辑-tag-文档-引入
+1. 动态tag编辑
+1.1 删除
+1.2 添加
+> html(el-tag+el-input+el-button)+css+js(handleClose+showInput+handleInputConfirm)
+
+#### 07-项目-商品管理-分类参数-动态参数-动态编辑-tag-配置-完成
+1. el-tag v-for ="tag in scope.row.attr_vals"
+2. "handleInputConfirm(scope.row.attr_vals)"
+3. "handleClose(scope.row.attr_vals,tag)"
+
+
+#### 08-项目-商品管理-分类参数-动态参数-删除-发送请求
+> attr_vals 以,分割的字符串
+> 删除请求的接口 put 请求体 接口文档中没有
+```js
+attr_name: attr_name,
+attr_sel: "many",
+attr_vals: attr_vals.join(",")
+```
+```js
+ async handleClose(attr_vals, attr_id, attr_name, tag) {
+      attr_vals.splice(attr_vals.indexOf(tag), 1);
+      // 发送请求 1.7.5
+      // categories/:id/attributes/:attrId   put
+      // put请求体 { attr_name:?,attr_sel:?,attr_vals:?}
+      // attr_name	参数名称	不能为空
+      // attr_sel	[only,many]	不能为空
+      // attr_vals	如果是 many 就需要填写值的选项，以逗号分隔
+      let putData = {
+        attr_name: attr_name,
+        attr_sel: "many",
+        attr_vals: attr_vals.join(",")
+      };
+      const res = await this.$http.put(
+        `categories/${this.selectedOptions[2]}/attributes/${attr_id}`,
+        putData
+      );
+      console.log(res);
+    },
+
+```
+#### 09-项目-商品管理-分类参数-动态参数-添加-发送请求
+> handleInputConfirm(attr_vals, attr_id, attr_name)
+> 添加属性值和删除属性值 请求是同一个put请求
+
+#### 10-项目-商品管理-分类参数-静态参数-布局-获取数据
+1. 点击第二个tab 请求静态参数数组的数据
+2. el-table 布局
+3. 把动态参数的表格进行修改
+
+#### 11-项目-商品管理-商品分类-准备组件-路由配置
+1. 准备组件 goods/goodscate.vue
+2. 路由配置 path:'/categories'
+
+#### 12-项目-商品管理-商品分类-准备组件-代码梳理
+1. 对话框中的级联选择器的数据 还未获取
+
+#### 13-项目-商品管理-商品分类-element-tree-grid-文档-引入
+
+#### 14-项目-商品管理-商品分类-element-tree-grid-配置
+
+#### 15-项目-商品管理-商品分类-添加分类-打开对话框
+
+#### 16-项目-商品管理-商品分类-添加分类-获取数据
+
+#### 17-项目-商品管理-商品分类-添加分类-发送请求
+
+#### 18-项目-合并分支-推送分支-新建分支
+
+#### 19-项目-订单管理-订单列表-准备组件-路由配置
+
+#### 21-项目-订单管理-订单列表-省市区引入
+
+#### 22-项目-数据统计-数据报表-Echarts-文档-引入
+
+#### 23-项目-数据统计-数据报表-Echarts-配置

@@ -13,6 +13,13 @@
 > 老师，其它组件之间的传值后边还说不子传父，兄弟之间传值
 > 老师，角色列表里，删空子权限，父权限那个框框也应该被删掉吧，这个应该怎么做呢？可否讲一下
 
+1. 编辑按钮 -> 打开对话框 -> 修改了 form -> 取消 -> 点击编辑按钮 -> 打开对话框
+   > 在打开对话框时 重新获取 this.form
+2. 看书 -> 编程
+3. 抓包工具 charles
+4. 父->子 slot-scope 传值? 子->父 兄弟传值 + vuex(难点!)新单词 代码位置
+5. count 记录总长度 click count-- === 0
+
 http://www.cnblogs.com/jiayuchn-test/p/8875105.html
 
 ### 12
@@ -80,6 +87,13 @@ http://www.cnblogs.com/jiayuchn-test/p/8875105.html
 商品管理-商品列表-添加商品
 
 ### 11
+
+添加商品 post this.form
+
+1. pics -> 图片移除+上传时
+2. this.selectoption.join(',')
+3. attrs -> 动态参数+静态参数数组
+   > [{"attr_id":15,"attr_value":"ddd"}]
 
 ### 12
 

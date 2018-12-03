@@ -12,11 +12,11 @@
     <!-- 添加分类的对话框 -->
     <el-dialog title="添加分类" :visible.sync="dialogFormVisibleAdd">
       <el-form :model="form">
-        <el-form-item label="分类名称" :label-width="formLabelWidth">
+        <el-form-item label="分类名称" label-width="120px">
           <el-input v-model="form.cat_name" autocomplete="off"></el-input>
         </el-form-item>
         <!-- 级联选择器 (表单元素) -->
-        <el-form-item label="分类" :label-width="formLabelWidth">
+        <el-form-item label="分类" label-width="120px">
           {{selectedOptions}}
           <el-cascader
             expand-trigger="hover"
@@ -99,7 +99,6 @@ export default {
         cat_name: "",
         cat_level: -1
       },
-      formLabelWidth: "140px",
       //  级联选择器要用的数据
       caslist: [],
       //  级联选择器选中的数据
