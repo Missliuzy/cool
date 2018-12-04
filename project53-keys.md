@@ -1371,44 +1371,78 @@ externals: {
 1. 父传子 props
 2. slot-scope="scope"
 3. 子传父
-3.1 子组件中 触发事件 this.$emit(事件名xxx,值a)
-3.2 在父组件中使用子组件时 绑定自定义事件@xxx="methods里面的方法名fn2"
-3.3 在父组件的methods的fn2形参位置获取到子组件传过来的值a
+  - 子组件中 触发事件 this.$emit(事件名xxx,值a)
+  - 在父组件中使用子组件时 绑定自定义事件@xxx="methods里面的方法名fn2"
+  - 在父组件的methods的fn2形参位置获取到子组件传过来的值a
+
 #### 09-基础-组件通信-兄弟组件通信
+
+> this.$on和this.$emit
+
+1. 提取了公共的模块 eventbus.js export default new Vue()
+2. 在a组件 导入eventbus.js  vm.$emit('xxx',100)
+3. 在b组件 导入eventbus.js vm.$on('xxx',(argv)=>{argv就是100})
+
+> 中央事件总线  -> vue-bus插件
+
+
 
 #### 10-基础-vuex-状态管理流程
 
+1. 数据声明 写在vuex中的state 
+2. 和后台交互(ajax) 交给actions
+3. commit给mutation 修改state中的数据
+4. state中的数据变化->组件自动更新
+
 #### 11-基础-vuex-使用场景
 
-#### 12-基础-vuex-state 和 mapState
+如果vue项目的数据管理很复杂(多个组件公用一份数据),建议使用vuex
 
-#### 13-基础-vuex-getters 和 mapGetters
+vue项目状态(数据)管理 vuex
 
-#### 14-基础-vuex-mutations 和 mapMutations
+react项目状态管理 redux
 
-#### 15-基础-vuex-mutations 异步问题
+vuex和redux都是基于flux框架实现的具体产物
+
+#### 12-基础-vuex-state 
+
+1. npm i vuex
+2. main.js import Vuex from 'vuex'
+3. main.js Vue.use(Vuex)
+4. let store = new Vuex.Store({state:{count:100}})
+5. new Vue({store})挂载仓库
+6. 在任何组件都可以通过计算属性去使用count数据 this.$store.state.count
+
+#### 13-基础-vuex-mapState
+
+> computed:{...mapState(["state中的属性名"])}
+
+#### 14-基础-vuex-getters 和 mapGetters
+
+> 如果state中的数据a很复杂 依赖其他数据b  此时把a写在getters里
+>
+> getters中的数据的用法和state中的数据用法一样
+>
+> computed:{...mapGetters(['anew'])}
+
+
+
+#### 15-基础-vuex-mutations 和 mapMutations
+
+> mutations中的修改数据的方法
+>
+> mutations只能写同步方法
+>
+> 异步的修改数据的代码要写在actions
 
 #### 16-基础-vuex-actions 和 mapActions
 
+> actions异步获取数据的 ajax/定时器
+
+1. actions:{fn(context){context.commit(mutations中的方法)}}
+2. 在组件methods中 this.$store.dispatch('actions中的方法fn')
+
 #### 17-基础-vuex-总结
-
-
-0. 培训视频
-国外 免费学习的网站
-
-1. 书
-你不知道的javascript(上中下) 
-js编程式导航
-js设计模式
-
-react状态管理与同构实战
-vue实践
-linux网站运维
-
-web架构设计
-web安全指南
-
-<!-- 算法导论() -->
 
 
 
