@@ -1261,32 +1261,155 @@ if (this.selectedOptions.length === 0) {
 
 #### 01-项目-补充-加载动画
 
+> v-loading="bool"
+
+1. bool 为 true 加载动画启动
+2. bool 为 false 动画停止
+
 #### 02-项目-补充-nextTick
+
+> data 更新->视图变化
+> this.\$nextTick(()=>{获取 dom 元素最新值的代码})
+> setTimeout()也可以解决这个问题
 
 #### 03-项目-优化-拦截器统一处理响应
 
+> res status===200 || 201 else {提示框 msg}
+> 把所有 status 不是 200 也不是 201 的情况 统一处理
+> vue 组件中的所有响应是非 200 和 201 的情况都不需要写了!
+
+```js
+// 添加响应拦截器
+axios.interceptors.response.use(
+  function(response) {
+    // console.log(1111111);
+    // console.log(response);
+    let {
+      meta: { status, msg }
+    } = response.data
+    // status === 200 status===201
+    if (status !== 200 && status !== 201) {
+      // 提示框
+      // this.$message.warning(msg)
+      Message.warning(msg)
+    }
+
+    // 对响应数据做点什么
+    return response
+  },
+  function(error) {
+    // 对响应错误做点什么
+    return Promise.reject(error)
+  }
+)
+```
+
 #### 04-项目-优化-路由懒加载
 
-#### 05-项目-优化-cdn-配置
+> 所有组件的 js 代码都会出现在同一个 app.xxx.js 文件 -> 加载该文件很慢
+> 让每个组件生成对应 js 文件
+> router/index.js 把组件的导入
+> const Foo = () => import ('')
+> 打包时 每个组件都有自己的序号.xxxxx.js 文件
 
-#### 06-项目-打包
+#### 05-项目-优化-cdn-引入
 
-#### 07-基础-组件通信-父子组件通信-子传父
+> 第三方资源 node_modules/ -> vender.xxx.js 变小
+> cdn 引入 -> src="http://"
 
-#### 08-基础-组件通信-兄弟组件通信
+> 把项目依赖的第三方包 cdn 引入
+> 可以去官网找 bootcdn
+> 在 index.html 引入 (element-ui(.css 和.js))
 
-#### 09-基础-vuex-状态管理流程
 
-#### 10-基础-vuex-使用场景
+#### 06-项目-优化-cdn-配置
+1. webpack.base.config.js
+> packjson中的包名: 该包暴露给全局变量
+```js
+ externals: {
+        'vue': 'Vue',
+        'vue-rotuer': 'VueRouter',
+        'element-ui': 'ELEMENT',
+        'axios': 'axios',
+        'echarts': 'echarts',
+        'moment': 'moment'
+    },
+```
+2. 
+2.1 main.js中 Element-UI 改成 ELEMENT
+2.2 rotuer/index.js Router 改成了 VueRouter
+3. main.js中 把之前的element-ui的css文件引入 注释掉
+4. 重新打包 npm run build
 
-#### 11-基础-vuex-state 和 mapState
 
-#### 12-基础-vuex-getters 和 mapGetters
+#### 07-项目-打包
+1. 路由懒加载  router/index.js 组件的导入
+> 不是一次加载所有资源 
+2. cdn引入
+2.1 index.html  link href和script src 引入了cdn资源
+2.2 webpack.base.config.js 
+```js
+externals: {
+        'vue': 'Vue',
+        'vue-rotuer': 'VueRouter',
+        'element-ui': 'ELEMENT',
+        'axios': 'axios',
+        'echarts': 'echarts',
+        'moment': 'moment'
+    },
+```
+2.3 main.js
+2.3.1 Element-UI 改成 ELEMENT
+2.3.2 去掉了element-ui的css导入
+2.4 router/index.js
+2.4.1 Router 改成 VueRouter
+2.5 重新打包 -> vendex.xxxx.js 文件变得很小
+2.6 上线: 把dist文件夹里的所有东西放在上线的服务器的根目录
 
-#### 13-基础-vuex-mutations 和 mapMutations
 
-#### 14-基础-vuex-mutations 异步问题
+#### 08-基础-组件通信-父子组件通信-子传父
+1. 父传子 props
+2. slot-scope="scope"
+3. 子传父
+3.1 子组件中 触发事件 this.$emit(事件名xxx,值a)
+3.2 在父组件中使用子组件时 绑定自定义事件@xxx="methods里面的方法名fn2"
+3.3 在父组件的methods的fn2形参位置获取到子组件传过来的值a
+#### 09-基础-组件通信-兄弟组件通信
 
-#### 15-基础-vuex-actions 和 mapActions
+#### 10-基础-vuex-状态管理流程
 
-#### 16-基础-vuex-总结
+#### 11-基础-vuex-使用场景
+
+#### 12-基础-vuex-state 和 mapState
+
+#### 13-基础-vuex-getters 和 mapGetters
+
+#### 14-基础-vuex-mutations 和 mapMutations
+
+#### 15-基础-vuex-mutations 异步问题
+
+#### 16-基础-vuex-actions 和 mapActions
+
+#### 17-基础-vuex-总结
+
+
+0. 培训视频
+国外 免费学习的网站
+
+1. 书
+你不知道的javascript(上中下) 
+js编程式导航
+js设计模式
+
+react状态管理与同构实战
+vue实践
+linux网站运维
+
+web架构设计
+web安全指南
+
+<!-- 算法导论() -->
+
+
+
+
