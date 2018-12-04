@@ -1070,50 +1070,59 @@ components: {
 ### day-12-重点
 
 #### 01-项目-商品管理-添加商品-表单数据处理-attrs
+
 1. this.form.attrs [{attr_id:?,attr_value:?}]
-2. 动态参数数组+静态参数数组 map遍历 返回新数组arr1和arr2
+2. 动态参数数组+静态参数数组 map 遍历 返回新数组 arr1 和 arr2
 3. 合并数组 this.form.attrs = [...arr1,...arr2]
 4. 发送请求
 5. 回到商品列表页
 
 #### 02-项目-商品管理-分类参数-新建组件-路由配置
+
 1. goods/cateparams.vue
 2. 路由配置 path:"/params"
 
 #### 03-项目-商品管理-分类参数-动态参数-布局-配置级联选择器
-1. el-form>el-form-item>el-cas级联选择器
-2. 把goodsadd.vue中的级联选择器进行修改
+
+1. el-form>el-form-item>el-cas 级联选择器
+2. 把 goodsadd.vue 中的级联选择器进行修改
 3. created(){this.getGoodsCate()}
 
 #### 04-项目-商品管理-分类参数-动态参数-获取动态参数数据
+
 1. 级联选择器选项发生改变时 同时 选择了三级分类
-> 获取动态参数数组 -> 把goodsadd.vue的代码进行修改
+   > 获取动态参数数组 -> 把 goodsadd.vue 的代码进行修改
 
 #### 05-项目-商品管理-分类参数-动态参数-表格渲染
+
 1. el-table :data="arrDyparams"
 2. 属性名称 prop="attr_name"
 3. 第一列 type="expand"
 
 #### 06-项目-商品管理-分类参数-动态参数-动态编辑-tag-文档-引入
-1. 动态tag编辑
-1.1 删除
-1.2 添加
-> html(el-tag+el-input+el-button)+css+js(handleClose+showInput+handleInputConfirm)
+
+1. 动态 tag 编辑
+   1.1 删除
+   1.2 添加
+   > html(el-tag+el-input+el-button)+css+js(handleClose+showInput+handleInputConfirm)
 
 #### 07-项目-商品管理-分类参数-动态参数-动态编辑-tag-配置-完成
+
 1. el-tag v-for ="tag in scope.row.attr_vals"
 2. "handleInputConfirm(scope.row.attr_vals)"
 3. "handleClose(scope.row.attr_vals,tag)"
 
-
 #### 08-项目-商品管理-分类参数-动态参数-删除-发送请求
+
 > attr_vals 以,分割的字符串
 > 删除请求的接口 put 请求体 接口文档中没有
+
 ```js
 attr_name: attr_name,
 attr_sel: "many",
 attr_vals: attr_vals.join(",")
 ```
+
 ```js
  async handleClose(attr_vals, attr_id, attr_name, tag) {
       attr_vals.splice(attr_vals.indexOf(tag), 1);
@@ -1136,67 +1145,79 @@ attr_vals: attr_vals.join(",")
     },
 
 ```
+
 #### 09-项目-商品管理-分类参数-动态参数-添加-发送请求
+
 > handleInputConfirm(attr_vals, attr_id, attr_name)
-> 添加属性值和删除属性值 请求是同一个put请求
+> 添加属性值和删除属性值 请求是同一个 put 请求
 
 #### 10-项目-商品管理-分类参数-静态参数-布局-获取数据
-1. 点击第二个tab 请求静态参数数组的数据
+
+1. 点击第二个 tab 请求静态参数数组的数据
 2. el-table 布局
 3. 把动态参数的表格进行修改
 
 #### 11-项目-商品管理-商品分类-准备组件-路由配置
+
 1. 准备组件 goods/goodscate.vue
 2. 路由配置 path:'/categories'
 
 #### 12-项目-商品管理-商品分类-准备组件-代码梳理
+
 1. 对话框中的级联选择器的数据 还未获取
 
 #### 13-项目-商品管理-商品分类-element-tree-grid-文档-引入
-> 单元格->树形结构 -> el-table -> elementui table插件
-> 插件名 element-tree-grid -> 增强了el-table的单元格
+
+> 单元格->树形结构 -> el-table -> elementui table 插件
+> 插件名 element-tree-grid -> 增强了 el-table 的单元格
+
 1. npm i element-tree-grid
 2. 导入
 3. 局部注册
 4. <el-tree-grid></el-tree-grid>
-5. treeKey  parentKey  levelKey  childKey
+5. treeKey parentKey levelKey childKey
+
 #### 14-项目-商品管理-商品分类-element-tree-grid-配置
-> treeKey等属性值的来源 el-table :data="list"
+
+> treeKey 等属性值的来源 el-table :data="list"
+
 ```js
 <el-tree-grid
-        prop="cat_name"
-        label="分类名称"
-        treeKey="cat_id"
-        parentKey="cat_pid"
-        levelKey="cat_level"
-        childKey="children"
-      ></el-tree-grid>
+  prop="cat_name"
+  label="分类名称"
+  treeKey="cat_id"
+  parentKey="cat_pid"
+  levelKey="cat_level"
+  childKey="children"
+/>
 ```
 
 #### 15-项目-商品管理-商品分类-添加分类-打开对话框-获取数据
+
 1. 点击添加分类按钮 - 打开对话框
 2. 获取二级分类的数据 type=2
-> 不能给三级分类子级添加四级分类
-
+   > 不能给三级分类子级添加四级分类
 
 #### 16-项目-商品管理-商品分类-添加分类-发送请求
-> 只能添加三级分类 
-> form:{cat_name:'',cat_level:-1,cat_pid:-1}
-```js
-  if (this.selectedOptions.length === 0) {
-        this.form.cat_pid = 0;
-        this.form.cat_level = 0;
-      } else if (this.selectedOptions.length === 1) {
-        this.form.cat_pid = this.selectedOptions[0];
-        this.form.cat_level = 1;
-      } else if (this.selectedOptions.length === 2) {
-        this.form.cat_pid = this.selectedOptions[1];
-        this.form.cat_level = 2;
-      }
 
+> 只能添加三级分类
+> form:{cat_name:'',cat_level:-1,cat_pid:-1}
+
+```js
+if (this.selectedOptions.length === 0) {
+  this.form.cat_pid = 0
+  this.form.cat_level = 0
+} else if (this.selectedOptions.length === 1) {
+  this.form.cat_pid = this.selectedOptions[0]
+  this.form.cat_level = 1
+} else if (this.selectedOptions.length === 2) {
+  this.form.cat_pid = this.selectedOptions[1]
+  this.form.cat_level = 2
+}
 ```
 
 #### 17-项目-合并分支-推送分支-新建分支
+
 1. git status
 2. git add .
 3. git commit -m ""
@@ -1205,32 +1226,67 @@ attr_vals: attr_vals.join(",")
 6. git merge dev-goods
 7. git push
 
-
 #### 18-项目-订单管理-订单列表-准备组件-路由配置
+
 1. order/order.vue
 2. 路由配置 path:"/orders"
-> 编辑按钮->打开对话框-> 省市区数据
+   > 编辑按钮->打开对话框-> 省市区数据
 
 #### 19-项目-订单管理-订单列表-省市区引入
 
-> 在.vue中可以引入.js库 swiper.js
+> 在.vue 中可以引入.js 库 swiper.js
 > vue-swiper.js 插件
 
-
 #### 20-项目-数据统计-数据报表-Echarts-文档-引入
+
 1. npm i echarts
 2. 导入
 3. 视图 提供一个容器 div(需要设置宽高)
 4. myechart.init(容器)
 5. 配置选项(配置数据) option
 6. mychart.setOption(option)
-> mounted(){this.useEcharts()}
-
+   > mounted(){this.useEcharts()}
 
 #### 22-项目-数据统计-数据报表-Echarts-配置
-> reports/type/1
-> option来源于两部分 
-// 1. reports/type/1
-// 2. 固定数据
-// setOption()
 
+> reports/type/1
+> option 来源于两部分
+> // 1. reports/type/1
+> // 2. 固定数据
+> // setOption()
+
+> npm run build 打包
+
+### day-13-重点
+
+#### 01-项目-补充-加载动画
+
+#### 02-项目-补充-nextTick
+
+#### 03-项目-优化-拦截器统一处理响应
+
+#### 04-项目-优化-路由懒加载
+
+#### 05-项目-优化-cdn-配置
+
+#### 06-项目-打包
+
+#### 07-基础-组件通信-父子组件通信-子传父
+
+#### 08-基础-组件通信-兄弟组件通信
+
+#### 09-基础-vuex-状态管理流程
+
+#### 10-基础-vuex-使用场景
+
+#### 11-基础-vuex-state 和 mapState
+
+#### 12-基础-vuex-getters 和 mapGetters
+
+#### 13-基础-vuex-mutations 和 mapMutations
+
+#### 14-基础-vuex-mutations 异步问题
+
+#### 15-基础-vuex-actions 和 mapActions
+
+#### 16-基础-vuex-总结
